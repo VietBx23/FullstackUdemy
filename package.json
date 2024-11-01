@@ -1,0 +1,27 @@
+{
+  "name": "fullstack-udemy",
+  "version": "1.0.0",
+  "description": "Fullstack-Udemy zero",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VietBx23/FullstackUdemy.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "xuanviet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VietBx23/FullstackUdemy/issues"
+  },
+  "homepage": "https://github.com/VietBx23/FullstackUdemy#readme",
+  "dependencies": {
+    "express": "^4.21.1",
+    "react": "^18.3.1"
+  }
+}
