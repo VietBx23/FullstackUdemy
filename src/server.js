@@ -10,18 +10,18 @@ const port = process.env.PORT || 8082;
 configViewEngine(app);
 app.use("/v1", webRouter);
 
-const initializeApp = async () => {
-  try {
-    const connection = await createDatabaseConnection();
-    const [results, fields] = await connection.query("SELECT * FROM Users u");
-    console.log(">>> Results:", results);
-    console.log(">>> Fields:", fields);
-  } catch (err) {
-    console.error("Error during app initialization:", err.message);
-  }
-};
+// const initializeApp = async () => {
+//   try {
+//     const connection = await createDatabaseConnection();
+//     const [results, fields] = await connection.query("SELECT * FROM Users u");
+//     console.log(">>> Results:", results);
+//     console.log(">>> Fields:", fields);
+//   } catch (err) {
+//     console.error("Error during app initialization:", err.message);
+//   }
+// };
 
-initializeApp();
+// initializeApp();
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
