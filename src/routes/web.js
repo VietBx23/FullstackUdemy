@@ -1,14 +1,11 @@
 const express = require("express"); //  Import the express module
+const { getHomePage, abc } = require("../controllers/HomeController");
+
 const router = express.Router(); //  Create a new router instance
 
 // khai báo route
-router.get("/", (req, res) => {
-  res.send("Hello World for Developer"); // send a response back to the client
-});
+router.get("/", getHomePage);
 
-router.get("/abc", (req, res) => {
-  // res.send("Hello World! from abc");
-  res.render("sample.ejs");
-});
+router.get("/abc", abc);
 
 module.exports = router; // export default
