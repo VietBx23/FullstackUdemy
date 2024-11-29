@@ -19,15 +19,16 @@
   "bugs": {
     "url": "https://github.com/VietBx23/FullstackUdemy/issues"
   },
-  
   "homepage": "https://github.com/VietBx23/FullstackUdemy#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "env": "^0.0.2",
     "express": "^4.21.1",
-    "mysql2": "^3.11.4",
-    "react": "^18.3.1"
+    "mysql2": "^3.11.5",
+    "react": "^18.3.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "3.1.7"

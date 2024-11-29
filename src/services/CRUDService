@@ -1,0 +1,24 @@
+const createDatabaseConnection = require("../config/database");
+
+const getAllUser = async () => {
+  let connection;
+  try {
+    // Tạo kết nối cơ sở dữ liệu
+    connection = await createDatabaseConnection();
+
+    // Thực hiện truy vấn
+    const [results, fields] = await connection.query("SELECT * FROM Users");
+    console.log("Check row", results);
+    return results;
+  } catch (err) {
+    console.error("Database query error:", err.message);
+    throw new Error("Error querying database");
+  } finally {
+    // Đóng kết nối
+    if (connection) await connection.end();
+  }
+};
+
+module.exports = {
+  getAllUser,
+};

@@ -2,27 +2,31 @@ require("dotenv").config();
 const express = require("express");
 const configViewEngine = require("./config/viewEngine");
 const webRouter = require("./routes/web");
-const createDatabaseConnection = require("./config/database");
+const accountRoutes = require("./routes/account.routes");
+const productRouter = require("./routes/product.route");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger"); // Import swaggerSpec từ tệp swagger.js
 
 const app = express();
 const port = process.env.PORT || 8082;
 
+// Cấu hình middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Cấu hình view engine (nếu có)
 configViewEngine(app);
+
+// Đăng ký các router
 app.use("/v1", webRouter);
+app.use("/accounts", accountRoutes);
+app.use("/product", productRouter);
 
-// const initializeApp = async () => {
-//   try {
-//     const connection = await createDatabaseConnection();
-//     const [results, fields] = await connection.query("SELECT * FROM Users u");
-//     console.log(">>> Results:", results);
-//     console.log(">>> Fields:", fields);
-//   } catch (err) {
-//     console.error("Error during app initialization:", err.message);
-//   }
-// };
-
-// initializeApp();
-
+// Serve Swagger UI tại /api-docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Sử dụng swaggerSpec đã import
+console.log("swager", swaggerSpec);
+// Lắng nghe trên port
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
