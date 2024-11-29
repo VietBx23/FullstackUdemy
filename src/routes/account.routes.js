@@ -15,20 +15,31 @@ const accountController = require("../controllers/account.controller");
  *         username:
  *           type: string
  *           description: Tên đăng nhập của tài khoản
+ *         email:
+ *           type: string
+ *           description: Địa chỉ email của tài khoản
  *         fullname:
  *           type: string
  *           description: Họ và tên của người dùng
  *         password:
  *           type: string
  *           description: Mật khẩu của tài khoản (ẩn trên response)
+ *         image:
+ *           type: string
+ *           description: URL của hình ảnh đại diện của tài khoản
  *       required:
  *         - username
  *         - password
+ *         - email
+ *         - fullname
+ *         - image
  *       example:
  *         id: 1
  *         username: "user01"
+ *         email: "user01@example.com"
  *         fullname: "Nguyen Van A"
  *         password: "password123"
+ *         image: "imageurl.jpg"
  */
 
 /**
@@ -99,10 +110,6 @@ router.get("/:id", accountController.getAccountById);
  *     responses:
  *       201:
  *         description: "Tạo mới tài khoản thành công"
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Account'
  *       400:
  *         description: "Thông tin không hợp lệ"
  */

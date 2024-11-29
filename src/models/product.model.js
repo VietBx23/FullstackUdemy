@@ -1,7 +1,7 @@
 const createDatabaseConnection = require("../config/database"); // Nhập hàm kết nối từ config
 class Product {
   // view all products
-  static async getAllProduct() {
+  static async findAllProducts() {
     let connection;
     try {
       connection = await createDatabaseConnection(); // Kết nối database
@@ -20,7 +20,7 @@ class Product {
     try {
       connection = await createDatabaseConnection();
       const [rows] = await connection.query(
-        "SELECT * FROM products WHERE id = ?",
+        "SELECT * FROM Products WHERE id = ?",
         [id]
       );
       return rows[0]; // Trả về dữ liệu
@@ -57,7 +57,7 @@ class Product {
     try {
       connection = await createDatabaseConnection();
       await connection.query(
-        "UPDATE products set name=?, price=?, image=? where id = ? ",
+        "UPDATE Products set name=?, price=?, image=? where id = ? ",
         [name, price, image, id]
       );
     } catch (error) {
@@ -72,7 +72,7 @@ class Product {
     let connection;
     try {
       connection = await createDatabaseConnection();
-      await connection.query("DELETE FROM products WHERE id = ?", [id]);
+      await connection.query("DELETE FROM Products WHERE id = ?", [id]);
     } catch (error) {
       console.error("Error deleting products: ", err.message);
       throw err;
