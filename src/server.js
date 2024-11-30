@@ -26,7 +26,7 @@ app.use("/users", userRouter);
 
 // Serve Swagger UI tại /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Sử dụng swaggerSpec đã import
-console.log("swager", swaggerSpec);
+// console.log("swager", swaggerSpec);
 // Lắng nghe trên port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
