@@ -27,34 +27,20 @@ exports.getOrderDetailById = async (req, res) => {
   }
 };
 
-// Lấy OrderDetail theo username
-exports.getOrderDetailByUsername = async (req, res) => {
-  const { username } = req.params;
+exports.getOrderDetailsByOrderId = async (req, res) => {
+  const { order_id } = req.params.order_id;
   try {
-    const orderDetails = await OrderDetails.getOrderDetailByUsername(username);
+    const orderDetails = await OrderDetails.getOrderDetailsByOrderId(order_id);
+
     if (orderDetails.length > 0) {
       res.status(200).json(orderDetails);
     } else {
       res
         .status(404)
-        .json({ error: "No order details found for this username" });
+        .json({ error: "No order details found for this order ID" });
     }
   } catch (error) {
-    console.error("Error fetching order details by username:", error.message);
-    res.status(500).json({ error: "Failed to retrieve order details" });
-  }
-};
-exports.getOrderDetailByOrder = async (req, res) => {
-  const { order_id } = req.params;
-  try {
-    const orderDetails = await OrderDetails.getOrderDetailByOrder(order_id);
-    if (orderDetails.length > 0) {
-      res.status(200).json(orderDetails);
-    } else {
-      res.status(404).json({ error: "No order details found for this order" });
-    }
-  } catch (error) {
-    console.error("Error fetching order details by order:", error.message);
+    console.error("Error fetching order details by order_id:", error.message);
     res.status(500).json({ error: "Failed to retrieve order details" });
   }
 };

@@ -34,34 +34,18 @@ class orderDetail {
     }
   }
 
-  // Lấy OrderDetail theo username
-  static async getOrderDetailByUsername(username) {
+  static async getOrderDetailsByOrderId(order_id) {
     let connection;
     try {
       connection = await createDatabaseConnection();
+
       const [rows] = await connection.query(
-        "SELECT * FROM OrderDetails WHERE username = ?",
-        [username]
-      );
-      return rows;
-    } catch (error) {
-      console.error("Error querying database: ", error.message);
-      throw error;
-    } finally {
-      if (connection) await connection.end();
-    }
-  }
-  static async getOrderDetailByOrder(order_id) {
-    let connection;
-    try {
-      connection = await createDatabaseConnection();
-      const [rows] = await connection.query(
-        "SELECT * FROM OrderDetails where order_id= ? ",
+        "SELECT * FROM OrderDetails WHERE order_id = ?",
         [order_id]
       );
-      return rows;
+      return rows[0];
     } catch (error) {
-      console.error("Error querying database: ", error.message);
+      console.error("Error querying database:", error.message);
       throw error;
     } finally {
       if (connection) await connection.end();

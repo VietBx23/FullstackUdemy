@@ -10,6 +10,7 @@ const contactRouter = require("./routes/contact.routes");
 const shoppingCartRouter = require("./routes/shopping-cart.routes");
 const OrderRouter = require("./routes/orders.router");
 const OrderDetailRouter = require("./routes/orderDetail.router");
+const ImageProducts = require("./routes/imageProduct.router");
 
 // Create express app
 const swaggerUi = require("swagger-ui-express");
@@ -35,6 +36,7 @@ app.use("/contacts", contactRouter);
 app.use("/shopping-cart", shoppingCartRouter);
 app.use("/orders", OrderRouter);
 app.use("/orderdetails", OrderDetailRouter);
+app.use("/imageProducts", ImageProducts);
 // Serve Swagger UI tại /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Sử dụng swaggerSpec đã import
 // console.log("swager", swaggerSpec);

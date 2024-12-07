@@ -98,33 +98,35 @@ router.get("/", orderDetailController.getAllOrderDetails);
  *       404:
  *         description: "Không tìm thấy chi tiết đơn hàng"
  */
+
 router.get("/:id", orderDetailController.getOrderDetailById);
 /**
  * @swagger
  * /orderdetails/{order_id}:
  *   get:
- *     summary: "Lấy thông tin chi tiết đơn hàng theo ID"
+ *     summary: "Get Order Details by Order ID"
  *     tags: [OrderDetails]
- *     description: "Trả về thông tin chi tiết đơn hàng của một đơn hàng với ID cụ thể."
+ *     description: "Retrieve the order details for a specific order by its ID."
  *     parameters:
  *       - in: path
  *         name: order_id
  *         required: true
- *         description: ID của chi tiết đơn hàng.
+ *         description: ID of the order.
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: "Thông tin chi tiết đơn hàng"
+ *         description: "Order details retrieved successfully."
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/OrderDetail'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/OrderDetail'
  *       404:
- *         description: "Không tìm thấy chi tiết đơn hàng"
+ *         description: "No order details found for the given ID."
  */
-
-router.get("/:order_id", orderDetailController.getOrderDetailByOrder);
+router.get("/:order_id", orderDetailController.getOrderDetailsByOrderId);
 /**
  * @swagger
  * /orderdetails:
