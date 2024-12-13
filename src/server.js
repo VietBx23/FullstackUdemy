@@ -14,6 +14,7 @@ const ImageProducts = require("./routes/imageProduct.router");
 const discountProductRoutes = require("./routes/discountProduct.router");
 const warehouseRouter = require("./routes/warehouse.router");
 const commentRouter = require("./routes/comment.router");
+const replyRouter = require("./routes/reply.router");
 // Create express app
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swagger"); // Import swaggerSpec từ tệp swagger.js
@@ -42,6 +43,7 @@ app.use("/imageProducts", ImageProducts);
 app.use("/discount-products", discountProductRoutes);
 app.use("/warehouses", warehouseRouter);
 app.use("/comments", commentRouter);
+app.use("/replies", replyRouter);
 // Serve Swagger UI tại /api-docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec)); // Sử dụng swaggerSpec đã import
 // console.log("swager", swaggerSpec);
