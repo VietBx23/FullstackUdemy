@@ -228,6 +228,29 @@ class UserController {
       res.status(401).json({ message: error.message || "Google login failed" });
     }
   }
+  static async facebookLogin(req, res) {
+    const { accessToken } = req.body;
+    try {
+      if (!accessToken) {
+        return res.status(400).json({
+          success: false,
+          message: "accessToken is required",
+        });
+      }
+      const result = await User.loginWithFacebook(accessToken);
+      res.status(200).json({
+        success: true,
+        data: result,
+        message: "Facebook login successful",
+      });
+    } catch (error) {
+      console.error("Facebook login error:", error.message);
+      res.status(401).json({
+        success: false,
+        message: error.message || "Facebook login failed",
+      });
+    }
+  }
 }
 
 module.exports = UserController;

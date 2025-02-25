@@ -406,4 +406,5 @@ router.post("/logout", UserController.logout); // Đăng xuất người dùng
  *         description: Lỗi server
  */
 router.post("/google-login", UserController.googleLogin);
+router.post("/facebook-login", UserController.facebookLogin);
 module.exports = router;
