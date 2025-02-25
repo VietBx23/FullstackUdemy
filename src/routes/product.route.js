@@ -59,6 +59,62 @@ router.get("/", productController.getAllProducts);
 
 /**
  * @swagger
+ * /api/products/sale:
+ *   get:
+ *     summary: Lấy danh sách sản phẩm giảm giá
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Danh sách sản phẩm giảm giá
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
+router.get("/sale", productController.getAllProductSale);
+/**
+ * @swagger
+ * /api/products/top4ProductSale:
+ *   get:
+ *     summary: Lấy danh sách 4 sản phẩm giảm giá
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Danh sách sản phẩm giảm giá
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ */
+router.get("/top4ProductSale", productController.getTop4ProductSale);
+
+/**
+ * @swagger
+ * /api/products/top4NewProducts:
+ *   get:
+ *     summary: Lấy danh sách 4 sản phẩm mới nhất
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Danh sách 4 sản phẩm mới nhất
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Product'
+ *       404:
+ *         description: Không tìm thấy sản phẩm
+ *       500:
+ *         description: Lỗi server
+ */
+router.get("/top4NewProducts", productController.getTop4NewProducts);
+/**
+ * @swagger
  * /api/products/{id}:
  *   get:
  *     summary: Lấy thông tin sản phẩm theo ID

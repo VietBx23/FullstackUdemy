@@ -343,4 +343,67 @@ router.put("/update-charge-password", UserController.updateChargePassword); // C
 
 router.post("/logout", UserController.logout); // Đăng xuất người dùng
 
+/**
+ * @swagger
+ * /users/google-login:
+ *   post:
+ *     summary: Đăng nhập bằng Google
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idToken:
+ *                 type: string
+ *             required:
+ *               - idToken
+ *     responses:
+ *       200:
+ *         description: Đăng nhập Google thành công
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     token:
+ *                       type: string
+ *                     tokenExpiresAt:
+ *                       type: string
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                         username:
+ *                           type: string
+ *                         email:
+ *                           type: string
+ *                         fullname:
+ *                           type: string
+ *                         image:
+ *                           type: string
+ *                         googleId:
+ *                           type: string
+ *                         jwt_token:
+ *                           type: string
+ *                         token_expires_at:
+ *                           type: string
+ *                 message:
+ *                   type: string
+ *       400:
+ *         description: Thiếu idToken
+ *       401:
+ *         description: Đăng nhập thất bại
+ *       500:
+ *         description: Lỗi server
+ */
+router.post("/google-login", UserController.googleLogin);
 module.exports = router;

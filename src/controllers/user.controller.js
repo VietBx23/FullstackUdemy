@@ -200,6 +200,34 @@ class UserController {
       res.status(500).json({ error: "Something went wrong during logout" });
     }
   };
+  static async googleLogin(req, res) {
+    const { idToken } = req.body;
+
+    try {
+      if (!idToken) {
+        return res.status(400).json({ message: "idToken is required" });
+      }
+
+      const result = await User.loginWithGoogle(idToken);
+      res.json({
+        token: result.token,
+        tokenExpiresAt: result.tokenExpiresAt,
+        user: {
+          id: result.user.id,
+          username: result.user.username,
+          email: result.user.email,
+          fullname: result.user.fullname, // Đồng bộ với model
+          image: result.user.image,
+          googleId: result.user.googleId,
+          jwt_token: result.user.jwt_token, // Trùng với token ở trên nhưng giữ cho đầy đủ
+          token_expires_at: result.user.token_expires_at,
+        },
+      });
+    } catch (error) {
+      console.error("Controller error:", error.message); // Thêm log để debug
+      res.status(401).json({ message: error.message || "Google login failed" });
+    }
+  }
 }
 
 module.exports = UserController;

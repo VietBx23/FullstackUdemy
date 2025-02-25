@@ -8,6 +8,18 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.getTop4NewProducts = async (req, res) => {
+  try {
+    const products = await Product.getTop4NewProducts();
+    if (products.length === 0) {
+      return res.status(404).json({ message: "No products found" });
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error in getTop4NewProducts:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 exports.getProductsById = async (req, res) => {
   try {
@@ -43,5 +55,25 @@ exports.deleteProduct = async (req, res) => {
     res.status(200).json({ message: "Product deleted" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+// **New function** to get top 4 products on sale
+exports.getAllProductSale = async (req, res) => {
+  try {
+    const productsOnSale = await Product.findAllProductSale();
+    res.status(200).json(productsOnSale);
+  } catch (error) {
+    console.error("Lỗi khi lấy sản phẩm giảm giá:", error.message);
+    res.status(500).json({ error: "Lỗi server khi lấy sản phẩm giảm giá." });
+  }
+};
+exports.getTop4ProductSale = async (req, res) => {
+  try {
+    const productsOnSale = await Product.top4ProductSale();
+    res.status(200).json(productsOnSale);
+  } catch (error) {
+    console.error("Lỗi khi lấy sản phẩm giảm giá:", error.message);
+    res.status(500).json({ error: "Lỗi server khi lấy sản phẩm giảm giá." });
   }
 };

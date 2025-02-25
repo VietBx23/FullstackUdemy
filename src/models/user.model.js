@@ -3,6 +3,11 @@ const bcrypt = require("bcryptjs"); // Dùng để mã hóa mật khẩu
 const jwt = require("jsonwebtoken"); // Dùng để tạo và xác thực JWT
 const transporter = require("../config/mail"); // Đảm bảo bạn đã cấu hình mail.js
 const crypto = require("crypto"); // Để tạo mã reset mật khẩu
+const { OAuth2Client } = require("google-auth-library"); // Thêm Google Auth
+const GOOGLE_CLIENT_ID =
+  "965256866011-jlh1kddr9q0o3177hhf91s20bbdd0o90.apps.googleusercontent.com";
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
 class User {
   // Lấy tất cả người dùng
   static async findAllUsers() {
@@ -324,6 +329,97 @@ class User {
       if (connection) await connection.end();
     }
   }
-}
+  static async loginWithGoogle(idToken) {
+    let connection;
+    try {
+      // Xác thực idToken với Google
+      console.log("Received idToken:", idToken);
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+      console.log("Google payload:", payload);
 
+      // Lấy dữ liệu từ Google
+      const userData = {
+        googleId: payload.sub,
+        email: payload.email,
+        fullname: payload.name || "Unknown", // Nếu không có name, dùng mặc định
+        image: payload.picture || "", // Nếu không có picture, để trống
+        username: payload.email.split("@")[0], // Tự tạo username từ email
+        password: null, // Không cần password cho Google Login
+      };
+      console.log("User data to save:", userData);
+
+      connection = await createDatabaseConnection();
+      console.log("Database connected");
+
+      // Kiểm tra user tồn tại (dựa trên googleId hoặc email)
+      const [rows] = await connection.query(
+        "SELECT * FROM users WHERE googleId = ? OR email = ?",
+        [userData.googleId, userData.email]
+      );
+      console.log("Query result (existing user):", rows);
+
+      let user;
+      if (rows.length > 0) {
+        // User đã tồn tại
+        user = rows[0];
+        console.log("User found:", user);
+      } else {
+        // Thêm user mới với tất cả các trường
+        const [result] = await connection.query(
+          "INSERT INTO users (username, password, email, fullname, image, googleId, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+          [
+            userData.username,
+            userData.password, // NULL vì không dùng mật khẩu
+            userData.email,
+            userData.fullname,
+            userData.image,
+            userData.googleId,
+          ]
+        );
+        console.log("Insert result:", result);
+        user = { id: result.insertId, ...userData };
+      }
+
+      // Tạo JWT
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET || "my-secret-key", // Dùng mặc định nếu không có .env
+        { expiresIn: process.env.JWT_EXPIRATION || "1h" }
+      );
+      const tokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 giờ
+
+      // Cập nhật token và thời gian hết hạn
+      await connection.query(
+        "UPDATE users SET jwt_token = ?, token_expires_at = ? WHERE id = ?",
+        [token, tokenExpiresAt, user.id]
+      );
+      console.log("Token updated for user ID:", user.id);
+
+      // Trả về thông tin đầy đủ
+      return {
+        token,
+        tokenExpiresAt,
+        user: {
+          id: user.id,
+          username: userData.username,
+          email: userData.email,
+          fullname: userData.fullname,
+          image: userData.image,
+          googleId: userData.googleId,
+          jwt_token: token,
+          token_expires_at: tokenExpiresAt,
+        },
+      };
+    } catch (error) {
+      console.error("Error in Google login:", error.message);
+      throw error;
+    } finally {
+      if (connection) await connection.end();
+    }
+  }
+}
 module.exports = User;

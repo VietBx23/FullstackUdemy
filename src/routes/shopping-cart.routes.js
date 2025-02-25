@@ -5,7 +5,7 @@ const shoppingCartController = require("../controllers/shopping-cart.controler")
 /**
  * @swagger
  * tags:
- *   name: shopping-cart
+ *   name: ShoppingCart
  *   description: API quản lý giỏ hàng
  */
 

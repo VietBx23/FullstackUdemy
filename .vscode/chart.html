@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biểu đồ kết hợp</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .card-header {
+        background-color: #f8f9fa;
+        padding: 10px 15px;
+        font-weight: bold;
+      }
+      .card-body {
+        padding: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sơ đồ thống kê -->
+    <div class="row g-3 mt-4">
+      <div class="col-md-12">
+        <div class="card h-100">
+          <div class="card-header">
+            Biểu đồ kết hợp Doanh thu và Số đơn sạc theo tháng
+          </div>
+          <div class="card-body">
+            <canvas id="combinedChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Dữ liệu JSON giả lập
+      const jsonData = {
+        months: [
+          "Tháng 1",
+          "Tháng 2",
+          "Tháng 3",
+          "Tháng 4",
+          "Tháng 5",
+          "Tháng 6",
+          "Tháng 7",
+          "Tháng 8",
+          "Tháng 9",
+          "Tháng 10",
+          "Tháng 11",
+          "Tháng 12",
+        ],
+        revenue: [
+          12000, 15000, 10000, 17000, 14000, 20000, 18000, 19000, 16000, 21000,
+          22000, 25000,
+        ],
+        chargingOrders: [30, 45, 25, 50, 35, 60, 55, 65, 40, 70, 75, 80],
+      };
+
+      // Lấy dữ liệu từ JSON
+      const months = jsonData.months;
+      const revenue = jsonData.revenue;
+      const chargingOrders = jsonData.chargingOrders;
+
+      // Tạo biểu đồ kết hợp
+      const ctx = document.getElementById("combinedChart").getContext("2d");
+      const combinedChart = new Chart(ctx, {
+        type: "bar", // Loại biểu đồ chính
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: "Doanh thu (VND)",
+              type: "line", // Biểu đồ dạng đường
+              data: revenue,
+              borderColor: "#ff6384",
+              backgroundColor: "rgba(255, 99, 132, 0.2)",
+              borderWidth: 2,
+              tension: 0.4,
+              yAxisID: "y1",
+            },
+            {
+              label: "Số đơn sạc",
+              type: "bar", // Biểu đồ dạng cột
+              data: chargingOrders,
+              backgroundColor: "#36a2eb",
+              borderWidth: 1,
+              yAxisID: "y2",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Doanh thu và Số đơn sạc theo tháng",
+            },
+          },
+          scales: {
+            y1: {
+              type: "linear",
+              position: "left",
+              title: {
+                display: true,
+                text: "Doanh thu (VND)",
+              },
+            },
+            y2: {
+              type: "linear",
+              position: "right",
+              title: {
+                display: true,
+                text: "Số đơn sạc",
+              },
+              grid: {
+                drawOnChartArea: false,
+              },
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
